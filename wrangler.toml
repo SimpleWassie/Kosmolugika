@@ -1,0 +1,10 @@
+name = "kosmolugika-v01"
+compatibility_date = "2026-09-29"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kosmolugika"
+database_id = "6c17f416-cb66-4dd5-93c6-919d6bd52e1a"
+migrations_dir = "migrations"
+

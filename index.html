@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b11" />
+  <meta name="description" content="A quiet universe for building your next story." />
+  <title>Kosmolugika — Story galaxy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}</script>
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <section id="home" class="home-screen hidden">
+      <header class="home-header"><a class="brand" href="#"><span class="brand-mark">✳</span> KOSMOLUGIKA</a><span class="eyebrow">YOUR STORY WORLDS</span></header>
+      <div class="home-content"><div class="home-intro"><div><p class="eyebrow">THE STUDIO</p><h1>Every story has<br /><span>a universe.</span></h1><p class="muted">Choose a galaxy to step inside, or start a new one.</p></div><button class="button button-primary" id="create-galaxy">＋ <span>New galaxy</span></button></div><div id="galaxy-list" class="galaxy-grid"></div></div>
+      <footer class="home-footer"><span class="brand-mini">✳</span> A space to think in stories <span class="footer-dot">·</span> <span id="save-state">Saved on this device</span></footer>
+    </section>
+
+    <section id="studio" class="studio hidden">
+      <header class="topbar">
+        <button class="brand brand-button" id="back-home" title="All galaxies"><span class="brand-mark">✳</span><span class="brand-name">KOSMOLUGIKA</span></button>
+        <div class="galaxy-title-wrap"><input id="galaxy-name" class="galaxy-title" aria-label="Galaxy name" /><span class="save-indicator"><i></i> <span id="save-label">SAVED</span></span></div>
+        <div class="top-actions"><button class="icon-button search-toggle" id="search-toggle" title="Search ( / )">⌕</button><input id="search" class="search-input" placeholder="Find anything…" /><button id="add-item" class="button button-primary add-button">＋ <span>New body</span></button><button class="icon-button" id="more-menu" title="More actions">···</button></div>
+      </header>
+      <nav class="lens-bar"><div class="lens-tabs" id="lens-tabs"><button class="lens-tab active" data-view="galaxy"><span class="lens-icon">◉</span> Galaxy</button><button class="lens-tab" data-view="list"><span class="lens-icon">☷</span> List</button><button class="lens-tab" data-view="board"><span class="lens-icon">▥</span> Board</button><button class="lens-tab" data-view="breakdown"><span class="lens-icon">▤</span> Breakdown</button><button class="lens-tab" data-view="tasks"><span class="lens-icon">✓</span> Open tasks <b id="task-count">0</b></button></div><div class="lens-tools"><button class="tool-button" id="layout-toggle">✧ <span>Free</span><span class="chevron">⌄</span></button><button class="tool-button" id="filter-toggle">☷ <span>Filter</span><span id="filter-count" class="filter-count hidden">0</span></button></div></nav>
+      <div class="workspace">
+        <div id="canvas-wrap" class="canvas-wrap"><canvas id="galaxy-canvas"></canvas><div class="space-vignette"></div><div id="map-labels" class="map-labels"></div><div class="map-corner map-meta"><span class="live-dot"></span><span id="body-total">0 BODIES</span><span class="meta-divider"></span><span id="link-total">0 LINKS</span></div><div class="map-corner map-hint"><span class="key">DRAG</span> to explore <span class="hint-divider">·</span> <span class="key">+</span> <span class="key">−</span> to zoom</div><div class="zoom-controls"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button><button id="recenter" aria-label="Recenter">⌖</button></div><button id="canvas-add" class="canvas-add" title="New body">＋</button><div id="empty-map" class="empty-map hidden"><span class="empty-orbit">✳</span><h2>Your universe is waiting.</h2><p>Every story starts somewhere. Add a body to begin.</p><button class="button button-primary" data-new-item>＋ Add your first body</button></div></div>
+        <section id="lens-content" class="lens-content hidden"></section>
+        <aside id="memo" class="memo-panel hidden"><div class="memo-grab"></div><div class="memo-header"><span class="memo-kicker"><i></i><span id="memo-kicker">SCENE</span></span><button class="icon-button memo-close" id="memo-close">×</button></div><div class="memo-scroll"><div class="memo-title-row"><input id="memo-title" class="memo-title" placeholder="Untitled" /><button id="delete-item" class="icon-button delete-button" title="Move to trash">⌫</button></div><div class="memo-meta-row"><select id="memo-type"></select><select id="memo-category"></select></div><div id="scene-fields" class="scene-fields"><label class="field-label">STORY PLACEMENT</label><div class="placement-row"><label>ACT <input id="memo-act" type="number" min="1" placeholder="—" /></label><label>EPISODE <input id="memo-episode" type="number" min="1" placeholder="—" /></label><label>SEQ. <input id="memo-sequence" type="number" min="1" placeholder="—" /></label></div></div><div class="memo-section"><label class="field-label" for="memo-summary">IN A SENTENCE</label><textarea id="memo-summary" class="summary-input" rows="2" placeholder="What happens here, in a line?"></textarea></div><div class="memo-section body-section"><div class="section-head"><label class="field-label" for="memo-body">THE MEMO</label><button id="preview-toggle" class="text-button">Preview</button></div><textarea id="memo-body" class="body-input" placeholder="Start with a thought…"></textarea><div id="memo-preview" class="memo-preview hidden"></div></div><div class="memo-section"><div class="section-head"><label class="field-label">CONNECTED BODIES</label><button id="link-add" class="text-button">＋ Link</button></div><div id="memo-links" class="memo-links"></div></div><div id="appears-section" class="memo-section hidden"><label class="field-label">APPEARS IN</label><div id="appears-list" class="appears-list"></div></div><div class="memo-section"><div class="section-head"><label class="field-label">CHECKLIST <span id="memo-task-count"></span></label><button id="task-add" class="text-button">＋ Add</button></div><div id="memo-tasks" class="memo-tasks"></div><input id="new-task" class="inline-add hidden" placeholder="Write a task, press Enter…" /></div><div class="memo-section"><div class="section-head"><label class="field-label">REFERENCES</label><button id="ref-add" class="text-button">＋ Add</button></div><div id="memo-refs" class="memo-refs"></div></div></div><footer class="memo-footer"><span id="memo-created">CREATED JUST NOW</span><span>·</span><span id="memo-saved">ALL CHANGES SAVED</span></footer></aside>
+      </div>
+      <div id="popover" class="popover hidden"></div><div id="toast" class="toast"></div>
+    </section>
+    <div id="modal-layer" class="modal-layer hidden"></div>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+
