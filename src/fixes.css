@@ -1,0 +1,41 @@
+/* Overrides layered on top of style.css. !important is used because stylesheet order is not guaranteed after bundling. */
+
+/* Phones: keep the ··· menu (trash, export, import, categories) and the Breakdown tab reachable */
+@media (max-width: 520px) {
+  .top-actions > .icon-button:last-child { display: inline-flex !important; align-items: center; justify-content: center; }
+  .lens-tab[data-view=breakdown] { display: flex !important; }
+  .galaxy-title { width: calc(100vw - 230px) !important; }
+  .save-indicator.error { display: flex !important; }
+}
+
+/* Sync state */
+.save-indicator.error i { background: #e07a8a !important; }
+.save-indicator.error { color: #e07a8a; }
+
+/* Reference thumbnails */
+.ref-thumb { width: 34px; height: 34px; object-fit: cover; border-radius: 3px; border: 1px solid #2a2f3a; flex: none; background: #0e121a; }
+
+/* Board card controls (touch-friendly alternative to drag and drop) */
+.card-tools { display: flex; gap: 4px; margin-top: 9px; }
+.card-tools button { background: #10141d; border: 1px solid #2a2f3a; color: #9aa0ad; border-radius: 3px; font-size: 10px; padding: 3px 8px; min-height: 28px; }
+.card-tools button:hover { color: #e7e0ff; border-color: #514a70; }
+
+/* Editable link rows */
+.link-label[data-editlink] { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+.link-row .row-remove { min-width: 22px; min-height: 22px; }
+
+/* Safe areas (viewport-fit=cover is set in index.html) */
+.studio, .home-screen { padding-top: env(safe-area-inset-top, 0px); }
+.canvas-add { bottom: calc(25px + env(safe-area-inset-bottom, 0px)) !important; }
+.toast { bottom: calc(19px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 800px) {
+  .memo-panel { bottom: calc(7px + env(safe-area-inset-bottom, 0px)) !important; }
+}
+
+/* Comfortable tap targets on touch devices */
+@media (pointer: coarse) {
+  .icon-button { min-width: 38px; min-height: 38px; }
+  .row-remove { min-width: 30px; min-height: 30px; }
+  .link-row, .appear-row, .task-row { min-height: 40px; }
+  .text-button { padding: 8px; }
+}
